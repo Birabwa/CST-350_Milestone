@@ -1,12 +1,16 @@
-﻿using CST_350_Milestone.Models;
-using CST_350_Milestone;
-using Microsoft.AspNetCore.Mvc;
-using System.Reflection;
-
-namespace CST_350_Milestone.Controllers
+﻿using Microsoft.AspNetCore.Mvc;
+using Milestone1.
+namespace Milestone1.Controllers
 {
     public class RegistrationController : Controller
     {
+        private readonly RegDBContext _context;
+
+        public RegistrationController(RegDBContext context)
+        {
+            _context = context;
+        }
+
         public IActionResult Index()
         {
             return View();
@@ -16,7 +20,10 @@ namespace CST_350_Milestone.Controllers
         {
             if (ModelState.IsValid) // Check if submitted data is valid
             {
-                return View(model); 
+                _context.Registers.Add(model); // Make sure it's 'Registers' and not 'Register'
+                _context.SaveChanges();
+
+                return View(model);
             }
             return View("Index", model);
         }
